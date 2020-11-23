@@ -33,7 +33,7 @@ brew install fzf
 brew install go
 
 function copy_when_not_exist() {
-  path = $1
+  path=$1
   if [ ! -e ~/$path ]; then
     cp -a ./files/$path ~/$path
   fi
