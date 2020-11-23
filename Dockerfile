@@ -3,7 +3,8 @@ FROM debian
 RUN apt-get update && apt-get install -y \
   curl \
   git \
-  sudo
+  sudo \
+  build-essential
 
 RUN useradd -m -s /bin/bash linuxbrew \
   && echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers

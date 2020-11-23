@@ -21,6 +21,8 @@ check() {
 
 if ! ( test $(which brew) ) then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> /home/linuxbrew/.profile
+  eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 fi
 
 brew install neovim
