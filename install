@@ -43,5 +43,5 @@ copy_when_not_exist .zshrc
 copy_when_not_exist .config
 
 if [ ! -e ~/.tmux.conf ]; then
-  ln -s ~/.config/tmux/tmux.conf
+  ln -s ~/.config/tmux/tmux.conf ~/.tmux.conf
 fi
