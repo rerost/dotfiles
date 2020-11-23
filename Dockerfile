@@ -12,4 +12,5 @@ USER linuxbrew
 
 COPY . .
 
+# NOTE: テスト用なのでキャッシュなどは意識していない
 RUN ./install
