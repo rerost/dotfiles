@@ -19,7 +19,7 @@ check() {
   fi
 }
 
-if ! ( test $(which brew) ) then
+if ! ( test $(which brew) ); then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> /home/linuxbrew/.profile
   eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
@@ -31,3 +31,17 @@ brew install direnv
 brew install zsh
 brew install fzf
 brew install go
+
+function copy_when_not_exist() {
+  path = $1
+  if [ ! -e ~/$path ]; then
+    cp ./files/$path ~/$path
+  fi
+}
+
+copy_when_not_exist .zshrc
+copy_when_not_exist .config
+
+if [ ! -e ~/.tmux.conf ]; then
+  ln -s ~/.config/tmux/tmux.conf
+fi
