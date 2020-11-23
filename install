@@ -35,7 +35,7 @@ brew install go
 function copy_when_not_exist() {
   path = $1
   if [ ! -e ~/$path ]; then
-    cp ./files/$path ~/$path
+    cp -a ./files/$path ~/$path
   fi
 }
 
