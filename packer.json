@@ -1,7 +1,8 @@
 {
   "variables": {
     "google_project_id": "",
-    "google_application_credentials": "key.json"
+    "google_application_credentials": "key.json",
+    "commit_hash": ""
   },
   "builders": [
     {
@@ -11,7 +12,8 @@
       "ssh_username": "packer",
       "machine_type": "e2-micro",
       "zone": "us-central1-a",
-      "account_file": "{{user `google_application_credentials`}}"
+      "account_file": "{{user `google_application_credentials`}}",
+      "image_name": "dotfile-{{user `commit_hash`}}"
     }
   ],
   "provisioners": [

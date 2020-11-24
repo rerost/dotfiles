@@ -18,7 +18,7 @@ jobs:
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install packer
           echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }} | base64 -d > key.json
-          packer build -var google_project_id=${{ secrets.GOOGLE_PROJECT_ID }} -var google_application_credentials=key.json packer.json
+          packer build -var google_project_id=${{ secrets.GOOGLE_PROJECT_ID }} -var google_application_credentials=key.json -var commmit_hash=${{ github.sha }} packer.json
   build_test:
     runs-on: ubuntu-latest
     steps:
