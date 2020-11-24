@@ -31,6 +31,7 @@ brew install direnv
 brew install zsh
 brew install fzf
 brew install go
+brew install docker
 
 function copy_when_not_exist() {
   path=$1
