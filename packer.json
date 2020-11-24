@@ -13,7 +13,7 @@
       "machine_type": "e2-micro",
       "zone": "us-central1-a",
       "account_file": "{{user `google_application_credentials`}}",
-      "image_name": "dotfile-${{user `commit_hash`}}"
+      "image_name": "dotfile-{{user `commit_hash`}}"
     }
   ],
   "provisioners": [
