@@ -10,7 +10,7 @@
       "project_id": "{{user `google_project_id`}}",
       "source_image": "debian-9-stretch-v20200805",
       "ssh_username": "packer",
-      "machine_type": "e2-micro",
+      "machine_type": "e2-medium",
       "zone": "us-central1-a",
       "account_file": "{{user `google_application_credentials`}}",
       "image_name": "dotfile-{{user `commit_hash`}}"
