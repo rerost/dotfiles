@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: set google_application_credentials
+      - name: packer
         run: |
           echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }} | base64 -d > key.json
           packer build -var google_project_id=${{ secrets.GOOGLE_PROJECT_ID }} -var google_application_credentials=key.json packer.json
