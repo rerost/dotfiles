@@ -1,0 +1,223 @@
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+  let g:NERDTreeIgnore=['vendor', '__pycache__', 'node_modules', 'log']
+  nnoremap <silent><C-t> :NERDTreeToggle<CR>
+  nnoremap <silent><C-e> :NERDTreeFind %<CR>
+'''
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+
+# [[plugins]]
+# repo = 'ruanyl/vim-gh-line'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+
+[[plugins]]
+repo = 'haya14busa/incsearch.vim'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+
+[[plugins]]
+repo = 'Shougo/neocomplcache.vim'
+
+[[plugins]]
+repo = 'Xuyuanp/nerdtree-git-plugin'
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+
+[[plugins]]
+repo = 'uarun/vim-protobuf'
+
+[[plugins]]
+repo = 'mattn/vim-goimports'
+
+# [[plugins]]
+# repo = 'zxqfl/tabnine-vim'
+
+# For vim-lsp
+[[plugins]]
+repo = 'prabirshrestha/async.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
+hook_add = '''
+  let g:lsp_text_edit_enabled = 0
+'''
+
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+hook_add = '''
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  nmap <silent> gd :LspDefinition<CR>
+  nmap <silent> gd :LspDefinition<CR>
+  nmap <silent> gi :LspImplementation<CR>
+  nmap <silent> <f2> <plug>(lsp-rename)
+  nmap <silent> K <plug>(lsp-hover)
+
+  let g:lsp_diagnostics_enabled = 1
+  let g:lsp_diagnostics_echo_cursor = 1
+  let g:asyncomplete_auto_popup = 1
+  let g:asyncomplete_popup_delay = 0 
+  let g:lsp_text_edit_enabled = 1
+'''
+
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+merged = 0
+hook_add = '''
+  let s:pyls_config = {'pyls': {'plugins': {
+    \   'flake8': {'enabled': v:true},
+    \ }}}
+'''
+
+[[plugins]]
+repo = 'christoomey/vim-tmux-navigator'
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+
+[[plugins]]
+repo = 'iberianpig/tig-explorer.vim'
+
+[[plugins]]
+repo = 'liuchengxu/graphviz.vim'
+
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+hook_add = '''
+  nnoremap <silent> ,g  :<C-u>Denite grep -buffer-name=search-buffer<CR>
+  nnoremap <silent> ,r  :<C-u>Denite -resume<CR>
+  
+  nnoremap <silent> <C-u>b :<C-u>Denite buffer<CR>
+  nnoremap <silent> <C-u>f :<C-u>Denite file_mru<CR>
+  nnoremap <silent> <C-u>u :<C-u>Denite file_mru buffer<CR>
+  nnoremap <silent> <C-p> :<C-u>Denite file/rec<CR>
+
+  let s:denite_win_width_percent = 0.8
+  let s:denite_win_height_percent = 0.6
+  
+  call denite#custom#option('default', {
+      \ 'highlight_filter_background': 'CursorLine',
+      \ 'highlight_window_background': 'CursorLine',
+      \ 'split': 'floating',
+      \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
+      \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
+      \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
+      \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
+  \ })
+
+
+  	" Define mappings
+	autocmd FileType denite call s:denite_my_settings()
+	function! s:denite_my_settings() abort
+	  nnoremap <silent><buffer><expr> <CR>
+	  \ denite#do_map('do_action')
+	  nnoremap <silent><buffer><expr> d
+	  \ denite#do_map('do_action', 'delete')
+	  nnoremap <silent><buffer><expr> p
+	  \ denite#do_map('do_action', 'preview')
+	  nnoremap <silent><buffer><expr> q
+	  \ denite#do_map('quit')
+	  nnoremap <silent><buffer><expr> i
+	  \ denite#do_map('open_filter_buffer')
+	  nnoremap <silent><buffer><expr> <Space>
+	  \ denite#do_map('toggle_select').'j'
+	endfunction
+
+	autocmd FileType denite-filter call s:denite_filter_my_settings()
+	function! s:denite_filter_my_settings() abort
+	  imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
+	endfunction
+
+	" Change file/rec command.
+	call denite#custom#var('file/rec', 'command',
+	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+	" Change default action.
+	call denite#custom#kind('file', 'default_action', 'open')
+
+	" Add custom menus
+	let s:menus = {}
+
+	let s:menus.zsh = {
+		\ 'description': 'Edit your import zsh configuration'
+		\ }
+	let s:menus.zsh.file_candidates = [
+		\ ['zshrc', '~/.config/zsh/.zshrc'],
+		\ ['zshenv', '~/.zshenv'],
+		\ ]
+
+	let s:menus.my_commands = {
+		\ 'description': 'Example commands'
+		\ }
+	let s:menus.my_commands.command_candidates = [
+		\ ['Split the window', 'vnew'],
+		\ ['Open zsh menu', 'Denite menu:zsh'],
+		\ ['Format code', 'FormatCode', 'go,python'],
+		\ ]
+
+	call denite#custom#var('menu', 'menus', s:menus)
+
+	" Ag command on grep source
+	call denite#custom#var('grep', {
+		\ 'command': ['ag'],
+		\ 'default_opts': ['-i', '--vimgrep'],
+		\ 'recursive_opts': [],
+		\ 'pattern_opt': [],
+		\ 'separator': ['--'],
+		\ 'final_opts': [],
+		\ })
+
+	" Specify multiple paths in grep source
+	"call denite#start([{'name': 'grep',
+	"      \ 'args': [['a.vim', 'b.vim'], '', 'pattern']}])
+
+	" Define alias
+	call denite#custom#alias('source', 'file/rec/git', 'file/rec')
+	call denite#custom#var('file/rec/git', 'command',
+	      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+
+	call denite#custom#alias('source', 'file/rec/py', 'file/rec')
+	call denite#custom#var('file/rec/py', 'command',
+	\ ['scantree.py', '--path', ':directory'])
+
+	" Change ignore_globs
+	call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+	      \ [ '.git/', '.ropeproject/', '__pycache__/',
+	      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+
+	" Custom action
+	" Note: lambda function is not supported in Vim8.
+	call denite#custom#action('file', 'test',
+	      \ {context -> execute('let g:foo = 1')})
+	call denite#custom#action('file', 'test2',
+	      \ {context -> denite#do_action(
+	      \  context, 'open', context['targets'])})
+	" Source specific action
+	call denite#custom#action('source/file', 'test',
+	      \ {context -> execute('let g:bar = 1')})
+
+'''
