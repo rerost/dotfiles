@@ -22,7 +22,7 @@
       "inline": [
         "mkdir -p /tmp/dotfile",
         "sudo apt-get update",
-        "sudo apt-get install -y git"
+        "DEBIAN_FRONTEND=noninteractive sudo apt-get install -y git"
       ]
     },
     {

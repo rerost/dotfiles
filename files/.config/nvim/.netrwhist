@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/Users/user/Project/enpit2016/release1-rails/tmp'
+let g:netrw_dirhist_2='/Users/user/Downloads/suzaku_org/lib'
+let g:netrw_dirhist_3='/Users/user/Project/angularJs/tmp/chat-api/routes'
+let g:netrw_dirhist_4='/Users/user/Project/angularJs/tmp/chat-api/.git'
+let g:netrw_dirhist_5='/Users/user/Project/enpit2016/tmp/Prunner4iOS/Prunner4iOS.xcodeproj'
+let g:netrw_dirhist_6='/Users/user/.rbenv'
+let g:netrw_dirhist_7='/Users/user/Project/webpack_test/node_modules'
+let g:netrw_dirhist_8='/Users/user/Project/DesctopApplication/notifier/.git'
+let g:netrw_dirhist_9='/Users/user/.vim'
