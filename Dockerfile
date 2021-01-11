@@ -1,3 +1,4 @@
+# NOTE: テスト用なのでキャッシュなどは意識せず書いている
 FROM debian
 
 RUN apt-get update && apt-get install -y \
@@ -12,5 +13,4 @@ USER linuxbrew
 
 COPY . .
 
-# NOTE: テスト用なのでキャッシュなどは意識していない
 RUN ./install
