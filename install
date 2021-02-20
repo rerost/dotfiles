@@ -32,6 +32,7 @@ brew install zsh || echo "ignore exit code"
 brew install fzf
 brew install go
 brew install docker
+brew install docker-machine
 brew install hub
 
 sudo ln -s /bin/zsh $(which zsh)
