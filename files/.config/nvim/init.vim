@@ -1,32 +1,65 @@
-let s:dein_dir = expand('~/tmp/nvim/.cache/dein')
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-
-if &runtimepath !~# expand('~/.config/nvim/dein.vim')
-  if !isdirectory(s:dein_repo_dir)
-    execute '!git clone --depth=1 https://github.com/Shougo/dein.vim' s:dein_repo_dir
-  endif
-  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+" ----- vim-plug
+" https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-if dein#load_state(s:dein_dir)
-  call dein#begin(s:dein_dir)
-
-  let g:rc_dir    = expand('~/.config/nvim/rc')
-  let s:toml      = g:rc_dir . '/dein.toml'
-  let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
-
-  call dein#load_toml(s:toml,      {'lazy': 0})
-  call dein#load_toml(s:lazy_toml, {'lazy': 1})
-
-  call dein#end()
-  call dein#save_state()
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
-if dein#check_install()
-  call dein#install()
-endif
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
 
 
+call plug#begin()
+Plug 'scrooloose/nerdtree'
+Plug 'vim-denops/denops.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'Shougo/neomru.vim'
+Plug 'thinca/vim-quickrun'
+Plug 'haya14busa/incsearch.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'Shougo/neoyank.vim'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'cohama/lexima.vim'
+Plug 'cespare/vim-toml'
+Plug 'uarun/vim-protobuf'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'iberianpig/tig-explorer.vim'
+Plug 'liuchengxu/graphviz.vim'
+
+" ddu familiy
+Plug 'Shougo/ddu.vim'
+Plug 'Shougo/ddu-ui-ff'
+Plug 'Shougo/ddu-source-register'
+Plug 'kuuote/ddu-source-mr'
+Plug 'lambdalisue/mr.vim'
+Plug 'shun/ddu-source-buffer'
+Plug 'Shougo/ddu-filter-matcher_substring'
+Plug 'Shougo/ddu-commands.vim'
+Plug 'shun/ddu-source-rg'
+Plug 'Shougo/ddu-kind-file'
+Plug 'Shougo/ddu-source-file_rec'
+Plug 'yuki-yano/ddu-filter-fzf'
+
+call plug#end()
+
+
+" ----- general settings
 filetype plugin indent on
 
 syntax on
@@ -60,7 +93,7 @@ set termguicolors
 set pumblend=30
 set winblend=30
 
-let mapleader = "\<Space>"
+" let mapleader = "\<Space>"
 
 nmap <Esc><Esc> :nohl<CR>
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
@@ -109,3 +142,110 @@ set autowrite
 set rtp+=~/go/src/github.com/pocke/whichpr
 nnoremap <silent> <C-g> :call whichpr#open_line()<CR>
 nnoremap <Leader>b :TigBlame<CR>
+
+" ----- scrooloose/nerdtree
+let g:NERDTreeBookmarksFile = $HOME ."/tmp/nerdtree/bookmarks"
+nnoremap <silent><C-t> :NERDTreeToggle<CR>
+nnoremap <silent><C-e> :NERDTreeFind %<CR>
+
+" ----- prabirshrestha/asyncomplete-lsp.vim
+let g:lsp_text_edit_enabled = 0
+
+" ----- 'prabirshrestha/vim-lsp'
+if !exists('g:vscode')
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  nmap <silent> gd <plug>(lsp-definition)
+  nmap <silent> gi <plug>(lsp-implementation)
+  nmap <silent> gr <plug>(lsp-references)
+  nmap <silent> K <plug>(lsp-hover)
+
+  let g:lsp_diagnostics_enabled = 1
+  let g:lsp_diagnostics_echo_cursor = 1
+  let g:asyncomplete_auto_popup = 1
+  let g:asyncomplete_popup_delay = 0 
+  let g:lsp_text_edit_enabled = 1
+
+  let g:lsp_format_sync_timeout = 1000
+  autocmd BufWritePre *.go call execute(['LspCodeActionSync source.organizeImports', 'LspDocumentFormatSync'])
+else
+  nmap <silent> gd <Cmd>call VSCodeNotify('editor.action.revealDefinition')<CR>
+  nmap <silent> gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
+  nmap <silent> gr <Cmd>call VSCodeNotify('editor.action.referenceSearch.trigger')<CR>
+  nmap <silent> K  <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
+endif
+
+" ----- mattn/vim-lsp-settings
+let s:pyls_config = {'pyls': {'plugins': {
+  \   'flake8': {'enabled': v:true},
+  \ }}}
+
+" ----- Shougo/ddu.nvim
+call ddu#custom#patch_global({
+    \   'ui': 'ff',
+    \   'uiParams': {
+    \     'ff': {
+    \       'startFilter': v:false,
+    \       'split': 'floating',
+    \       'floatingBorder': "single", 
+    \       'filterSplitDirection': 'floating',
+    \       'highlights': {
+    \         'floating': 'Normal:BorderedFloat,Search:',
+    \       }
+    \     }
+    \   },
+    \   'sourceOptions': {
+    \     '_': {
+    \       'matchers': ['matcher_fzf'],
+    \     },
+    \   },
+    \   'sourceParams' : {
+    \     'rg': {'args': ['--column', '--no-heading']},
+    \   },
+    \   'kindOptions': {
+    \     'file': {
+    \       'defaultAction': 'open',
+    \     },
+    \   },
+    \ })
+
+call ddu#custom#patch_local('files', {
+    \ 'sources': [
+    \   {'name': 'file_rec', 'params': {}},
+    \ ],
+    \ })
+
+
+"ddu-key-setting
+autocmd FileType ddu-ff call s:ddu_my_settings()
+function! s:ddu_my_settings() abort
+  nnoremap <buffer><silent> <CR>
+        \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer><silent> <Space>
+        \ <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
+  nnoremap <buffer><silent> i
+        \ <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+  nnoremap <buffer><silent> q
+        \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+endfunction
+
+autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
+function! s:ddu_filter_my_settings() abort
+  inoremap <buffer><silent> <CR>
+  \ <Esc><Cmd>close<CR>
+  nnoremap <buffer><silent> <CR>
+  \ <Cmd>close<CR>
+  nnoremap <buffer><silent> q
+  \ <Cmd>close<CR>
+endfunction
+
+"ddu keymapping.
+nnoremap <silent> <C-u>u :<C-u>Ddu mr<CR>
+nnoremap <silent> <C-p> :<C-u>call ddu#start({'name': 'files'})<CR>
+nnoremap <silent> ,g <Cmd>call ddu#start({
+\   'name': 'grep',
+\   'sources':[
+\     {'name': 'rg', 'params': {'input': input("Search: "), 'args': ["--json"]}}
+\   ],
+\ })<CR>
+
