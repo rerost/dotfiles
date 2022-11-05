@@ -1,3 +1,27 @@
+if exists('g:loaded_man')
+  finish
+endif
+let g:loaded_man = 1
+
+let g:did_install_default_menus = 1
+let g:did_install_syntax_menu   = 1
+let g:did_indent_on             = 1
+let g:did_load_filetypes        = 1
+let g:did_load_ftplugin         = 1
+let g:loaded_2html_plugin       = 1
+let g:loaded_gzip               = 1
+let g:loaded_man                = 1
+let g:loaded_matchit            = 1
+let g:loaded_matchparen         = 1
+let g:loaded_netrwPlugin        = 1
+let g:loaded_remote_plugins     = 1
+let g:loaded_shada_plugin       = 1
+let g:loaded_spellfile_plugin   = 1
+let g:loaded_tarPlugin          = 1
+let g:loaded_tutor_mode_plugin  = 1
+let g:loaded_zipPlugin          = 1
+let g:skip_loading_mswin        = 1
+
 " ----- vim-plug
 " https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -16,6 +40,9 @@ endif
 autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \| PlugInstall --sync | source $MYVIMRC
 \| endif
+
+" Close quickfix list after move to file
+autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
 
 
 call plug#begin()
@@ -41,6 +68,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'iberianpig/tig-explorer.vim'
 Plug 'liuchengxu/graphviz.vim'
+Plug 'knsh14/vim-github-link'
 
 " ddu familiy
 Plug 'Shougo/ddu.vim'
@@ -158,6 +186,7 @@ if !exists('g:vscode')
   nmap <silent> gd <plug>(lsp-definition)
   nmap <silent> gi <plug>(lsp-implementation)
   nmap <silent> gr <plug>(lsp-references)
+  nmap <silent> gt <plug>(lsp-type-definition)
   nmap <silent> K <plug>(lsp-hover)
 
   let g:lsp_diagnostics_enabled = 1
@@ -175,10 +204,15 @@ else
   nmap <silent> K  <Cmd>call VSCodeNotify('editor.action.showHover')<CR>
 endif
 
+let lsp_signature_help_enabled = 0
+
 " ----- mattn/vim-lsp-settings
 let s:pyls_config = {'pyls': {'plugins': {
   \   'flake8': {'enabled': v:true},
   \ }}}
+
+" ----- knsh14/vim-github-link
+nmap <silent> y :GetCommitLink<CR>
 
 " ----- Shougo/ddu.nvim
 call ddu#custom#patch_global({
@@ -246,6 +280,5 @@ nnoremap <silent> ,g <Cmd>call ddu#start({
 \   'name': 'grep',
 \   'sources':[
 \     {'name': 'rg', 'params': {'input': input("Search: "), 'args': ["--json"]}}
-\   ],
+\   ]
 \ })<CR>
-
