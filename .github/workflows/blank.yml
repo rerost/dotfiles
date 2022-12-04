@@ -28,7 +28,7 @@ jobs:
   comment_test:
     runs-on: ubuntu-latest
       - name: docker result
-        run docker run -it golang:1.19 echo "asd" >> $GITHUB_OUTPUT
+        run: docker run -it golang:1.19 echo "asd" >> $GITHUB_OUTPUT
       - name: comment-to-pr
         uses: peter-evans/create-or-update-comment@v2
         with:
