@@ -27,6 +27,7 @@ jobs:
         run: docker build -t test .
   comment_test:
     runs-on: ubuntu-latest
+    steps:
       - name: docker result
         run: docker run -it golang:1.19 echo "asd" >> $GITHUB_OUTPUT
       - name: comment-to-pr
