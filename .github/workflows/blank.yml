@@ -29,7 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: docker result
-        run: docker run golang:1.19 echo "asd" >> $GITHUB_OUTPUT
+        run: |
+          echo "text<<EOF" >> $GITHUB_OUTPUT
+          docker run golang:1.19 echo "asd" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
       - name: comment-to-pr
         uses: peter-evans/create-or-update-comment@v2
         with:
