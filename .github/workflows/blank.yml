@@ -29,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: docker result
+        id: docker_result
         run: |
           echo "text<<EOF" >> $GITHUB_OUTPUT
           docker run golang:1.19 echo "asd" >> $GITHUB_OUTPUT
@@ -37,4 +38,4 @@ jobs:
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          body: $GITHUB_OUTPUT
+          body: ${{ steps.docker_result.outputs.text }}
