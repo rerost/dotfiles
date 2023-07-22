@@ -19,20 +19,15 @@ check() {
   fi
 }
 
+check
+
 if ! ( test $(which brew) ); then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.profile
   eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 fi
 
-brew install neovim || echo "ignore exit code"
-brew install tmux
-brew install direnv
-brew install zsh || echo "ignore exit code"
-brew install fzf
-brew install go
-brew install docker
-brew install hub
+brew bundle
 
 function copy_when_not_exist() {
   path=$1
@@ -43,6 +38,7 @@ function copy_when_not_exist() {
 
 copy_when_not_exist .zshrc
 copy_when_not_exist .config
+copy_when_not_exist .
 
 if [ ! -e ~/.tmux.conf ]; then
   ln -s ~/.config/tmux/tmux.conf ~/.tmux.conf

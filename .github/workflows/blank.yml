@@ -25,3 +25,17 @@ jobs:
       - uses: actions/checkout@v2
       - name: docker build
         run: docker build -t test .
+  comment_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: docker result
+        id: docker_result
+        run: |
+          echo "text<<EOF" >> $GITHUB_OUTPUT
+          docker run golang:1.19 echo "asd" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: comment-to-pr
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ steps.docker_result.outputs.text }}
