@@ -66,6 +66,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
+" AI tools
+Plug 'github/copilot.vim'
+
 " ddu familiy
 Plug 'Shougo/ddu.vim'
 Plug 'Shougo/ddu-ui-ff'
